@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/font/font.xml" value="0.3921875" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_camera.xml" value="0.19947916666666668" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_ireland.xml" value="0.22" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_ireland_fan.xml" value="0.25" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_ireland_led.xml" value="0.29713552800342025" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_led_light.xml" value="0.25" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_rgb_sensor.xml" value="0.25317028985507245" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/activity_temp_humi_sensor.xml" value="0.18" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/dialog.xml" value="0.25" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/layout/text_layout.xml" value="0.29713552800342025" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/menu/ireland_fan_menu.xml" value="0.28430953398888414" />
+        <entry key="..\:/Users/witlab/AndroidStudioProjects/MobiusProjectApp/app/src/main/res/xml/network_security_config.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

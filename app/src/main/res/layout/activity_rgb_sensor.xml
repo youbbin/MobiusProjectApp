@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="#BA55D3"
+        android:orientation="vertical">
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back"
+            android:background="#BA55D3"
+            android:id="@+id/button_back_1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sensor_icon_white"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="RGB Sensor"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:fontFamily="@font/nanum"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="Sensor : TCS34725"
+        android:fontFamily="@font/nanum"
+        android:textSize="15dp"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="9"
+        android:paddingTop="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="R :"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_r"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="G :"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_g"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="B :"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_b"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CCT :"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_cct"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LUX :"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_lux"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="#C1F15A"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/back"
+                android:background="#C1F15A"
+                android:id="@+id/button_back_ireland_fan"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/button_menu_ireland_fan"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="#C1F15A"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_icon" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="308dp"
+            android:layout_height="172dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:src="@drawable/fan" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Ireland Table FAN"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            android:fontFamily="@font/nanum"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#B4E5FF"
+        android:gravity="center"
+        android:text="FAN" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Power"
+            android:textSize="15dp"
+            android:fontFamily="@font/nanum"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Level"
+            android:textSize="15dp"
+            android:fontFamily="@font/nanum"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="OFF"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_fan_power"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="0/10"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:fontFamily="@font/nanum"
+            android:id="@+id/textview_fan_level"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_weight="3"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/button_power_fan"
+                android:layout_width="133dp"
+                android:layout_height="165dp"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:padding="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/power_blue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.travijuu.numberpicker.library.NumberPicker
+                android:id="@+id/numberPicker_fan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/button_set_fan"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Set" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
