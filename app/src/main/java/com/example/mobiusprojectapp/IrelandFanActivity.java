@@ -49,8 +49,8 @@ public class IrelandFanActivity extends Activity {
     TextView textViewPower, textViewLevel;
     Context context;
     int startHour = 0, startMinute = 0, finishHour = 0, finishMinute = 0;
-
-
+    View view;
+    String startTime="", finishTime="";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +109,7 @@ public class IrelandFanActivity extends Activity {
             }
         });
 
-        thread_get = new HttpRequestGET_IrelandFan();
-        thread_get.start();
+
 
         menuButton = (ImageButton) findViewById(R.id.button_menu_ireland_fan);
         menuButton.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +121,13 @@ public class IrelandFanActivity extends Activity {
             }
         });
 
+        view=(View) View.inflate(context, R.layout.dialog, null);
+//        textViewStartTime = view.findViewById(R.id.textview_start_time);
+//        textViewFinishTime = view.findViewById(R.id.textview_finish_time);
 
 
+        thread_get = new HttpRequestGET_IrelandFan();
+        thread_get.start();
     }
 
     @Override
@@ -148,7 +152,7 @@ public class IrelandFanActivity extends Activity {
     public void showDialog(){
         AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(context); // 대화상자 빌더
         dialogBuilder.setTitle("예약 설정"); // 타이틀 설정
-        View view=(View) View.inflate(context, R.layout.dialog, null); // 대화상자 레이아웃을 뷰에 설정
+        view=(View) View.inflate(context, R.layout.dialog, null);
         dialogBuilder.setView(view);
         dialogBuilder.setPositiveButton("확인", // 확인 버튼
                 new DialogInterface.OnClickListener() {
@@ -156,11 +160,16 @@ public class IrelandFanActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("log","시작 시간 설정 >>> "+startHour+":"+startMinute);
                         Log.d("log","종료 시간 설정 >>> "+finishHour+":"+finishMinute);
+                        packet="3/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
+                        Runnable requestHttpPOST = new HttpRequestPOST_IrelandFan(packet); // 전송
+                        new Thread(requestHttpPOST).start();
                     }
                 });
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+        TextView textViewStartTime = view.findViewById(R.id.textview_start_time);
+        TextView textViewFinishTime = view.findViewById(R.id.textview_finish_time);
 
         Button buttonStartTime = view.findViewById(R.id.button_start_time);
         buttonStartTime.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +180,7 @@ public class IrelandFanActivity extends Activity {
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         startHour = hour;
                         startMinute = minute;
+                        textViewStartTime.setText(String.format("%02d",startHour)+":"+String.format("%02d",startMinute));
                     }
                 },startHour,startMinute,false);
                 startTimePickerDialog.setMessage("시작 시간");
@@ -188,6 +198,7 @@ public class IrelandFanActivity extends Activity {
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         finishHour = hour;
                         finishMinute = minute;
+                        textViewFinishTime.setText(String.format("%02d",finishHour)+":"+String.format("%02d",finishMinute));
                     }
                 },finishHour,finishMinute,false);
                 finishTimePickerDialog.setMessage("종료 시간");
@@ -196,8 +207,8 @@ public class IrelandFanActivity extends Activity {
             }
         });
 
-
-
+        textViewStartTime.setText(startTime);
+        textViewFinishTime.setText(finishTime);
     }
 
     protected void onDestroy() {
@@ -282,7 +293,7 @@ public class IrelandFanActivity extends Activity {
                     Log.d("Log",">>>>>>>> GET 완료 : "+result);
 
                     DataParsing dataParsing=new DataParsing();
-                    parsedData = dataParsing.getParsedData(6,result);
+                    parsedData = dataParsing.getParsedData(12,result);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -295,6 +306,11 @@ public class IrelandFanActivity extends Activity {
                                 textViewPower.setText("OFF");
                                 power = false;
                             }
+
+                            //testTime="test";
+                            //textViewStartTime.setText("test");
+                            startTime=parsedData[10];
+                            finishTime=parsedData[11];
                         }
                     });
 
