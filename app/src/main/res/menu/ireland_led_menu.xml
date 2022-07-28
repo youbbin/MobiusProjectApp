@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_set_led_on_off_time"
+        android:title="예약 설정">
+        <menu>
+            <item
+                android:id="@+id/menu_set_led_on_off_time_red"
+                android:title="RED LED"/>
+            <item
+                android:id="@+id/menu_set_led_on_off_time_blue"
+                android:title="BLUE LED"/>
+        </menu>
+    </item>
+</menu>

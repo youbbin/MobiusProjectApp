@@ -48,7 +48,7 @@ public class IrelandLedActivity extends Activity {
     TextView textview_power_red, textview_power_blue, textview_level_red, textview_level_blue;
     Context context;
     View view;
-    String startTime="", finishTime="";
+    String startTimeRed="", finishTimeRed="", startTimeBlue="", finishTimeBlue="";
     int startHour = 0, startMinute = 0, finishHour = 0, finishMinute = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,6 +149,7 @@ public class IrelandLedActivity extends Activity {
                 new Thread(requestHttpPOST).start();
             }
         });
+
         menuButton = (ImageButton) findViewById(R.id.button_menu_ireland_led);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,15 +168,18 @@ public class IrelandLedActivity extends Activity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ireland_menu, menu);
+        inflater.inflate(R.menu.ireland_led_menu, menu);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.menu_set_on_off_time:
-                showDialog(); // 시간 설정 대화상자 시작
+            case R.id.menu_set_led_on_off_time_red:
+                showDialog("1",startTimeRed, finishTimeRed); // 시간 설정 대화상자 시작
+                return true;
+            case R.id.menu_set_led_on_off_time_blue:
+                showDialog("2",startTimeBlue, finishTimeBlue);
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -183,7 +187,7 @@ public class IrelandLedActivity extends Activity {
     }
 
 
-    public void showDialog(){
+    public void showDialog(String channel, String startTime, String finishTime){
         AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(context); // 대화상자 빌더
         dialogBuilder.setTitle("예약 설정"); // 타이틀 설정
         view=(View) View.inflate(context, R.layout.dialog, null);
@@ -194,12 +198,9 @@ public class IrelandLedActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("log","시작 시간 설정 >>> "+startHour+":"+startMinute);
                         Log.d("log","종료 시간 설정 >>> "+finishHour+":"+finishMinute);
-                        packet="1/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
-                        Runnable requestHttpPOST_red_time_set = new HttpRequestPOST_IrelandLed(packet); // 전송
-                        new Thread(requestHttpPOST_red_time_set).start();
-                        packet="2/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
-                        Runnable requestHttpPOST_blue_time_set = new HttpRequestPOST_IrelandLed(packet); // 전송
-                        new Thread(requestHttpPOST_blue_time_set).start();
+                        packet=channel+"/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
+                        Runnable requestHttpPOST_time_set = new HttpRequestPOST_IrelandLed(packet); // 전송
+                        new Thread(requestHttpPOST_time_set).start();
                         Toast.makeText(context,"예약 설정을 완료했습니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -216,6 +217,9 @@ public class IrelandLedActivity extends Activity {
         TextView textViewStartTime = view.findViewById(R.id.textview_start_time);
         TextView textViewFinishTime = view.findViewById(R.id.textview_finish_time);
 
+        textViewStartTime.setText(startTime);
+        textViewFinishTime.setText(finishTime);
+
         String[] start_split = startTime.split(":");
         String [] finish_split = finishTime.split(":");
 
@@ -224,10 +228,8 @@ public class IrelandLedActivity extends Activity {
         finishHour = Integer.parseInt(finish_split[0]);
         finishMinute = Integer.parseInt(finish_split[1]);
 
-        Button buttonStartTime = view.findViewById(R.id.button_start_time);
-        buttonStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        View.OnClickListener clickListener = new View.OnClickListener(){
+            public void onClick(View view){
                 TimePickerDialog startTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
@@ -240,28 +242,16 @@ public class IrelandLedActivity extends Activity {
                 startTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 startTimePickerDialog.show();
             }
-        });
+        };
+
+        Button buttonStartTime = view.findViewById(R.id.button_start_time);
+        buttonStartTime.setOnClickListener(clickListener);
 
         Button buttonFinishTime = view.findViewById(R.id.button_finish_time);
-        buttonFinishTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog finishTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        finishHour = hour;
-                        finishMinute = minute;
-                        textViewFinishTime.setText(String.format("%02d",finishHour)+":"+String.format("%02d",finishMinute));
-                    }
-                },finishHour,finishMinute,false);
-                finishTimePickerDialog.setMessage("종료 시간");
-                finishTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                finishTimePickerDialog.show();
-            }
-        });
+        buttonFinishTime.setOnClickListener(clickListener);
 
-        textViewStartTime.setText(startTime);
-        textViewFinishTime.setText(finishTime);
+        textViewStartTime.setOnClickListener(clickListener);
+        textViewFinishTime.setOnClickListener(clickListener);
     }
 
 
@@ -370,8 +360,10 @@ public class IrelandLedActivity extends Activity {
                                 powerBlue = false;
                             }
 
-                            startTime = parsedData[6];
-                            finishTime = parsedData[7];
+                            startTimeRed = parsedData[6];
+                            finishTimeRed = parsedData[7];
+                            startTimeBlue = parsedData[8];
+                            finishTimeBlue = parsedData[9];
 
                         }
                     });
