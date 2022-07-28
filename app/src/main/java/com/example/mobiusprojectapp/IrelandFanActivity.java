@@ -176,6 +176,9 @@ public class IrelandFanActivity extends Activity {
         TextView textViewStartTime = view.findViewById(R.id.textview_start_time);
         TextView textViewFinishTime = view.findViewById(R.id.textview_finish_time);
 
+        textViewStartTime.setText(startTime);
+        textViewFinishTime.setText(finishTime);
+
         String[] start_split = startTime.split(":");
         String [] finish_split = finishTime.split(":");
 
@@ -184,10 +187,8 @@ public class IrelandFanActivity extends Activity {
         finishHour = Integer.parseInt(finish_split[0]);
         finishMinute = Integer.parseInt(finish_split[1]);
 
-        Button buttonStartTime = view.findViewById(R.id.button_start_time);
-        buttonStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        View.OnClickListener clickListener = new View.OnClickListener(){
+            public void onClick(View view){
                 TimePickerDialog startTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
@@ -200,28 +201,15 @@ public class IrelandFanActivity extends Activity {
                 startTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 startTimePickerDialog.show();
             }
-        });
+        };
+        Button buttonStartTime = view.findViewById(R.id.button_start_time);
+        buttonStartTime.setOnClickListener(clickListener);
 
         Button buttonFinishTime = view.findViewById(R.id.button_finish_time);
-        buttonFinishTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog finishTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        finishHour = hour;
-                        finishMinute = minute;
-                        textViewFinishTime.setText(String.format("%02d",finishHour)+":"+String.format("%02d",finishMinute));
-                    }
-                },finishHour,finishMinute,false);
-                finishTimePickerDialog.setMessage("종료 시간");
-                finishTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                finishTimePickerDialog.show();
-            }
-        });
+        buttonFinishTime.setOnClickListener(clickListener);
 
-        textViewStartTime.setText(startTime);
-        textViewFinishTime.setText(finishTime);
+        textViewStartTime.setOnClickListener(clickListener);
+        textViewFinishTime.setOnClickListener(clickListener);
     }
 
     protected void onDestroy() {
