@@ -160,7 +160,7 @@ public class IrelandFanActivity extends Activity {
                         packet="3/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
                         Runnable requestHttpPOST = new HttpRequestPOST_IrelandFan(packet); // 전송
                         new Thread(requestHttpPOST).start();
-                        Toast.makeText(context,"예약 설정을 완료했습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"FAN 예약 설정을 완료했습니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
         dialogBuilder.setNegativeButton("취소",
@@ -189,17 +189,39 @@ public class IrelandFanActivity extends Activity {
 
         View.OnClickListener clickListener = new View.OnClickListener(){
             public void onClick(View view){
-                TimePickerDialog startTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        startHour = hour;
-                        startMinute = minute;
-                        textViewStartTime.setText(String.format("%02d",startHour)+":"+String.format("%02d",startMinute));
-                    }
-                },startHour,startMinute,false);
-                startTimePickerDialog.setMessage("시작 시간");
-                startTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                startTimePickerDialog.show();
+                switch (view.getId()){
+                    case R.id.button_start_time:
+                    case R.id.textview_start_time:
+                        TimePickerDialog startTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                startHour = hour;
+                                startMinute = minute;
+                                textViewStartTime.setText(String.format("%02d",startHour)+":"+String.format("%02d",startMinute));
+
+                            }
+                        },startHour,startMinute,false);
+                        startTimePickerDialog.setMessage("시작 시간");
+                        startTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        startTimePickerDialog.show();
+                        break;
+
+                    case R.id.button_finish_time:
+                    case R.id.textview_finish_time:
+                        TimePickerDialog finishTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                finishHour = hour;
+                                finishMinute = minute;
+                                textViewFinishTime.setText(String.format("%02d",finishHour)+":"+String.format("%02d",finishMinute));
+
+                            }
+                        },finishHour,finishMinute,false);
+                        finishTimePickerDialog.setMessage("종료 시간");
+                        finishTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        finishTimePickerDialog.show();
+                        break;
+                }
             }
         };
         Button buttonStartTime = view.findViewById(R.id.button_start_time);
@@ -257,10 +279,8 @@ public class IrelandFanActivity extends Activity {
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                Log.d("Log","ddddddddddddddddddd");
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("Log","eeeeeeeeeeeeeeeeee");
             }
         }
 
