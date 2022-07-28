@@ -9,14 +9,31 @@
         android:layout_weight="8"
         android:background="#C1F15A"
         android:orientation="vertical">
-        <ImageButton
-            android:layout_width="40dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/back"
-            android:background="#C1F15A"
-            android:id="@+id/button_back_ireland_led"/>
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/back"
+                android:background="#C1F15A"
+                android:id="@+id/button_back_ireland_led"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
+            <ImageButton
+                android:id="@+id/button_menu_ireland_led"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="#C1F15A"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_icon" />
+        </LinearLayout>
         <ImageView
             android:layout_width="308dp"
             android:layout_height="172dp"

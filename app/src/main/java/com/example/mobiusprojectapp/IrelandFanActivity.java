@@ -2,14 +2,12 @@ package com.example.mobiusprojectapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +49,7 @@ public class IrelandFanActivity extends Activity {
     int startHour = 0, startMinute = 0, finishHour = 0, finishMinute = 0;
     View view;
     String startTime="", finishTime="";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,8 +121,6 @@ public class IrelandFanActivity extends Activity {
         });
 
         view=(View) View.inflate(context, R.layout.dialog, null);
-//        textViewStartTime = view.findViewById(R.id.textview_start_time);
-//        textViewFinishTime = view.findViewById(R.id.textview_finish_time);
 
 
         thread_get = new HttpRequestGET_IrelandFan();
@@ -133,14 +130,14 @@ public class IrelandFanActivity extends Activity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ireland_fan_menu, menu);
+        inflater.inflate(R.menu.ireland_menu, menu);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.menu_set_fan_on_off_time:
+            case R.id.menu_set_on_off_time:
                 showDialog(); // 시간 설정 대화상자 시작
                 return true;
         }
@@ -163,6 +160,14 @@ public class IrelandFanActivity extends Activity {
                         packet="3/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
                         Runnable requestHttpPOST = new HttpRequestPOST_IrelandFan(packet); // 전송
                         new Thread(requestHttpPOST).start();
+                        Toast.makeText(context,"예약 설정을 완료했습니다.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        dialogBuilder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
                     }
                 });
 
@@ -170,6 +175,14 @@ public class IrelandFanActivity extends Activity {
         dialog.show();
         TextView textViewStartTime = view.findViewById(R.id.textview_start_time);
         TextView textViewFinishTime = view.findViewById(R.id.textview_finish_time);
+
+        String[] start_split = startTime.split(":");
+        String [] finish_split = finishTime.split(":");
+
+        startHour = Integer.parseInt(start_split[0]);
+        startMinute = Integer.parseInt(start_split[1]);
+        finishHour = Integer.parseInt(finish_split[0]);
+        finishMinute = Integer.parseInt(finish_split[1]);
 
         Button buttonStartTime = view.findViewById(R.id.button_start_time);
         buttonStartTime.setOnClickListener(new View.OnClickListener() {

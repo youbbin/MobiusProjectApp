@@ -1,21 +1,26 @@
 package com.example.mobiusprojectapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.travijuu.numberpicker.library.Enums.ActionEnum;
-import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
-import androidx.annotation.Nullable;
 
-import org.w3c.dom.Text;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +33,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class IrelandLedActivity extends Activity {
-    ImageButton backButton, powerButtonRed, powerButtonBlue;
+    ImageButton backButton, powerButtonRed, powerButtonBlue, menuButton;
     Button setButtonRed, setButtonBlue;
     NumberPicker numberPickerRed, numberPickerBlue;
     Integer levelRed, levelBlue;
@@ -42,6 +47,9 @@ public class IrelandLedActivity extends Activity {
     String[] parsedData;
     TextView textview_power_red, textview_power_blue, textview_level_red, textview_level_blue;
     Context context;
+    View view;
+    String startTime="", finishTime="";
+    int startHour = 0, startMinute = 0, finishHour = 0, finishMinute = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,12 +149,121 @@ public class IrelandLedActivity extends Activity {
                 new Thread(requestHttpPOST).start();
             }
         });
-
+        menuButton = (ImageButton) findViewById(R.id.button_menu_ireland_led);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerForContextMenu(menuButton);
+                openContextMenu(menuButton);
+                unregisterForContextMenu(menuButton);
+            }
+        });
+        view=(View) View.inflate(context, R.layout.dialog, null);
 
 
         thread_get = new HttpRequestGET_IrelandLed();
         thread_get.start();
     }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.ireland_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.menu_set_on_off_time:
+                showDialog(); // 시간 설정 대화상자 시작
+                return true;
+        }
+        return super.onContextItemSelected(item);
+
+    }
+
+
+    public void showDialog(){
+        AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(context); // 대화상자 빌더
+        dialogBuilder.setTitle("예약 설정"); // 타이틀 설정
+        view=(View) View.inflate(context, R.layout.dialog, null);
+        dialogBuilder.setView(view);
+        dialogBuilder.setPositiveButton("확인", // 확인 버튼
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("log","시작 시간 설정 >>> "+startHour+":"+startMinute);
+                        Log.d("log","종료 시간 설정 >>> "+finishHour+":"+finishMinute);
+                        packet="1/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
+                        Runnable requestHttpPOST_red_time_set = new HttpRequestPOST_IrelandLed(packet); // 전송
+                        new Thread(requestHttpPOST_red_time_set).start();
+                        packet="2/3/"+startHour+":"+startMinute+","+finishHour+":"+finishMinute;
+                        Runnable requestHttpPOST_blue_time_set = new HttpRequestPOST_IrelandLed(packet); // 전송
+                        new Thread(requestHttpPOST_blue_time_set).start();
+                        Toast.makeText(context,"예약 설정을 완료했습니다.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        dialogBuilder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+        TextView textViewStartTime = view.findViewById(R.id.textview_start_time);
+        TextView textViewFinishTime = view.findViewById(R.id.textview_finish_time);
+
+        String[] start_split = startTime.split(":");
+        String [] finish_split = finishTime.split(":");
+
+        startHour = Integer.parseInt(start_split[0]);
+        startMinute = Integer.parseInt(start_split[1]);
+        finishHour = Integer.parseInt(finish_split[0]);
+        finishMinute = Integer.parseInt(finish_split[1]);
+
+        Button buttonStartTime = view.findViewById(R.id.button_start_time);
+        buttonStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog startTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        startHour = hour;
+                        startMinute = minute;
+                        textViewStartTime.setText(String.format("%02d",startHour)+":"+String.format("%02d",startMinute));
+                    }
+                },startHour,startMinute,false);
+                startTimePickerDialog.setMessage("시작 시간");
+                startTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                startTimePickerDialog.show();
+            }
+        });
+
+        Button buttonFinishTime = view.findViewById(R.id.button_finish_time);
+        buttonFinishTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog finishTimePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        finishHour = hour;
+                        finishMinute = minute;
+                        textViewFinishTime.setText(String.format("%02d",finishHour)+":"+String.format("%02d",finishMinute));
+                    }
+                },finishHour,finishMinute,false);
+                finishTimePickerDialog.setMessage("종료 시간");
+                finishTimePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                finishTimePickerDialog.show();
+            }
+        });
+
+        textViewStartTime.setText(startTime);
+        textViewFinishTime.setText(finishTime);
+    }
+
 
     protected void onDestroy() {
         super.onDestroy();
@@ -231,7 +348,7 @@ public class IrelandLedActivity extends Activity {
                     Log.d("Log",">>>>>>>> GET 완료 : "+result);
 
                     DataParsing dataParsing=new DataParsing();
-                    parsedData = dataParsing.getParsedData(6,result);
+                    parsedData = dataParsing.getParsedData(12,result);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -252,6 +369,9 @@ public class IrelandLedActivity extends Activity {
                                 textview_power_blue.setText("OFF");
                                 powerBlue = false;
                             }
+
+                            startTime = parsedData[6];
+                            finishTime = parsedData[7];
 
                         }
                     });

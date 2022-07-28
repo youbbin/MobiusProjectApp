@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_set_fan_on_off_time"
+        android:id="@+id/menu_set_on_off_time"
         android:title="예약 설정"/>
 </menu>
