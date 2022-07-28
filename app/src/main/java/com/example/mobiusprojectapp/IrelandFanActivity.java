@@ -130,7 +130,7 @@ public class IrelandFanActivity extends Activity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ireland_menu, menu);
+        inflater.inflate(R.menu.ireland_fan_menu, menu);
     }
 
     @Override
